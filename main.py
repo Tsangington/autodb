@@ -18,6 +18,10 @@ DB_PORT = os.getenv('DB_PORT')
 app = FastAPI()
 db = database.Database(name=DB_NAME, user=DB_USER, password=DB_PASSWORD, host=DB_HOST, port=DB_PORT)
 
+@app.get("/")
+async def home():
+    return {"message": "Welcome to autodb, try /upload, /data, /query!"}
+
 @app.get("/upload")
 async def upload_form():
     with open("static/html/upload.html", "r") as f:
