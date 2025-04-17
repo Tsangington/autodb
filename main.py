@@ -1,4 +1,5 @@
 from fastapi import FastAPI, UploadFile, File, Form
+from fastapi.responses import HTMLResponse
 from prompt import get_answer
 import database 
 import pandas as pd
@@ -52,7 +53,26 @@ async def upload_order(file: UploadFile = File(...)):
             db.store_order(customer_id, price, order_date)
     return {"message": "Order data uploaded successfully."}
 
-@app.post("/query")
+@app.get("/query", response_class=HTMLResponse)
+async def form_page():
+    return """
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Ask a Question</title>
+    </head>
+    <body>
+        <h1>Ask a Question</h1>
+        <form action="/query" method="post">
+            <input type="text" name="question" placeholder="Type your question here" required>
+            <button type="submit">Ask</button>
+        </form>
+    </body>
+    </html>
+    """
+
+@app.get("/answer")
 async def query(question: str = Form(...)):
     data = db.get_data()
     answer = get_answer(question, data)
