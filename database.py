@@ -1,5 +1,6 @@
 import psycopg2
-import datetime
+import datetime 
+from datetime import datetime
 import pandas as pd
 
 class Database:
