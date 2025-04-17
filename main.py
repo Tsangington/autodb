@@ -72,7 +72,7 @@ async def form_page():
     </html>
     """
 
-@app.get("/answer")
+@app.post("/answer")
 async def query(question: str = Form(...)):
     data = db.get_data()
     answer = get_answer(question, data)
