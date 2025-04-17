@@ -20,7 +20,7 @@ db = database.Database(name=DB_NAME, user=DB_USER, password=DB_PASSWORD, host=DB
 
 @app.get("/upload")
 async def upload_form():
-    with open("/static/html/upload.html", "r") as f:
+    with open("static/html/upload.html", "r") as f:
         html_content = f.read()
     return HTMLResponse(content=html_content)
 
@@ -54,7 +54,7 @@ async def upload(file: UploadFile = File(...), table: str = Form(...)):
 
 @app.get("/query", response_class=HTMLResponse)
 async def form_page():
-    with open("/static/html/query.html", "r") as f:
+    with open("static/html/query.html", "r") as f:
         html_content = f.read()
     return HTMLResponse(content=html_content)
 
