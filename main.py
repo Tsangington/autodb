@@ -18,8 +18,14 @@ DB_PORT = os.getenv('DB_PORT')
 app = FastAPI()
 db = database.Database(name=DB_NAME, user=DB_USER, password=DB_PASSWORD, host=DB_HOST, port=DB_PORT)
 
-@app.post("/upload_customer")
-async def upload_customer(file: UploadFile = File(...)):
+@app.get("/upload")
+async def upload_form():
+    with open("upload.html", "r") as f:
+        html_content = f.read()
+    return HTMLResponse(content=html_content)
+
+@app.post("/upload")
+async def upload(file: UploadFile = File(...), table: str = Form(...)):
     contents = await file.read()
     try:
         data = json.loads(contents)
@@ -28,49 +34,29 @@ async def upload_customer(file: UploadFile = File(...)):
         df = pd.read_csv(file.file)
         data = df.to_dict(orient="records")
 
-    for customer in data:
-        name = customer.get("name")
-        created_at = customer.get("created_at")
-        if name:
-            db.store_customer(name, created_at)
-    return {"message": "Customer data uploaded successfully."}
+    if table == "customer":
+        for customer in data:
+            name = customer.get("name")
+            created_at = customer.get("created_at")
+            if name:
+                db.store_customer(name, created_at)
+    elif table == "order":
+        for order in data:
+            customer_id = order.get("customer_id")
+            price = order.get("price")
+            order_date = order.get("order_date")
+            if customer_id and price:
+                db.store_order(customer_id, price, order_date)
+    else:
+        return {"message": "Invalid table selected."}
 
-@app.post("/upload_order")
-async def upload_order(file: UploadFile = File(...)):
-    contents = await file.read()
-    try:
-        data = json.loads(contents)
-    except Exception:
-        file.file.seek(0)
-        df = pd.read_csv(file.file)
-        data = df.to_dict(orient="records")
-
-    for order in data:
-        customer_id = order.get("customer_id")
-        price = order.get("price")
-        order_date = order.get("order_date")
-        if customer_id and price is not None:
-            db.store_order(customer_id, price, order_date)
-    return {"message": "Order data uploaded successfully."}
+    return {"message": f"{table.capitalize()} data uploaded successfully."}
 
 @app.get("/query", response_class=HTMLResponse)
 async def form_page():
-    return """
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Ask a Question</title>
-    </head>
-    <body>
-        <h1>Ask a Question</h1>
-        <form action="/answer" method="post">
-            <input type="text" name="question" placeholder="Type your question here" required>
-            <button type="submit">Ask</button>
-        </form>
-    </body>
-    </html>
-    """
+    with open("query.html", "r") as f:
+        html_content = f.read()
+    return HTMLResponse(content=html_content)
 
 @app.post("/answer")
 async def query(question: str = Form(...)):
