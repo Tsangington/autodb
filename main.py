@@ -4,8 +4,8 @@ import database
 import pandas as pd
 import json
 import os
+import uvicorn
 from dotenv import load_dotenv
-
 load_dotenv()
 
 DB_NAME = os.getenv('DB_NAME')
@@ -61,3 +61,8 @@ async def query(question: str = Form(...)):
 @app.get("/data")
 async def get_data():
     return {"data": db.get_data()}
+
+port = int(os.environ.get("PORT", 10000))
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)
