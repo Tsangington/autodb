@@ -60,12 +60,12 @@ class Database:
                 if isinstance(created_at, str):
                     created_at = datetime.fromisoformat(created_at)
                 cursor.execute(
-                    "INSERT INTO customer (name, created_at) VALUES (%s, %s) RETURNING id",
+                    "INSERT INTO customer (name, created_at) VALUES (%s, %s)",
                     (name, created_at)
                 )
             else:
                 cursor.execute(
-                    "INSERT INTO customer (name) VALUES (%s) RETURNING id",
+                    "INSERT INTO customer (name) VALUES (%s)",
                     (name,)
                 )
             customer_id = cursor.fetchone()[0]
@@ -78,12 +78,12 @@ class Database:
                 if isinstance(order_date, str):
                     order_date = datetime.fromisoformat(order_date)
                 cursor.execute(
-                    "INSERT INTO customer_order (customer_id, price, order_date) VALUES (%s, %s, %s) RETURNING id",
+                    "INSERT INTO customer_order (id, price, order_date) VALUES (%s, %s, %s)",
                     (customer_id, price, order_date)
                 )
             else:
                 cursor.execute(
-                    "INSERT INTO customer_order (customer_id, price) VALUES (%s, %s) RETURNING id",
+                    "INSERT INTO customer_order (id, price) VALUES (%s, %s)",
                     (customer_id, price)
                 )
             order_id = cursor.fetchone()[0]
