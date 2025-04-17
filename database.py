@@ -18,7 +18,7 @@ class Database:
             )
             """)
             cursor.execute("""
-            CREATE TABLE IF NOT EXISTS order (
+            CREATE TABLE IF NOT EXISTS customer_order (
                 id SERIAL PRIMARY KEY,
                 customer_id INT REFERENCES customer(id) ON DELETE CASCADE,
                 order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -77,12 +77,12 @@ class Database:
                 if isinstance(order_date, str):
                     order_date = datetime.fromisoformat(order_date)
                 cursor.execute(
-                    "INSERT INTO order_table (customer_id, price, order_date) VALUES (%s, %s, %s) RETURNING order_id",
+                    "INSERT INTO customer_order (customer_id, price, order_date) VALUES (%s, %s, %s) RETURNING order_id",
                     (customer_id, price, order_date)
                 )
             else:
                 cursor.execute(
-                    "INSERT INTO order_table (customer_id, price) VALUES (%s, %s) RETURNING order_id",
+                    "INSERT INTO customer_order (customer_id, price) VALUES (%s, %s) RETURNING order_id",
                     (customer_id, price)
                 )
             order_id = cursor.fetchone()[0]
@@ -99,7 +99,7 @@ class Database:
         with self.conn.cursor() as cursor:
             cursor.execute("""
             SELECT id, customer_id, order_date, price 
-            FROM order
+            FROM customer_order
             """)
             rows = cursor.fetchall()
         return rows
@@ -107,8 +107,8 @@ class Database:
     def get_data(self):
         with self.conn.cursor() as cursor:
             cursor.execute("""
-            SELECT order.id as order_id, customer_id, order_date, customer.name, price
-            FROM order
+            SELECT customer_order.id as order_id, customer_id, order_date, customer.name, price
+            FROM customer_order
             JOIN customer ON customer.id = order.customer_id
             """)
             rows = cursor.fetchall()
