@@ -1,0 +1,26 @@
+# Python-related
+*.pyc
+*.pyo
+__pycache__/
+*.pyd
+*.db
+*.sqlite3
+
+# Virtual environments
+venv/
+.env/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# VSCode
+.vscode/
+
+# IDEs
+.idea/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
