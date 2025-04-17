@@ -30,7 +30,7 @@ class Database:
 
     def import_initial_data(self):
         try:
-            customers_df = pd.read_csv("example_customers.csv")
+            customers_df = pd.read_csv("static/csv/example_customers.csv")
             for _, row in customers_df.iterrows():
                 name = row['name']
                 created_at = row.get('created_at', None)
@@ -42,7 +42,7 @@ class Database:
             print(f"Failed to import customers: {e}")
 
         try:
-            orders_df = pd.read_csv("example_orders.csv")
+            orders_df = pd.read_csv("static/csv/example_orders.csv")
             for _, row in orders_df.iterrows():
                 customer_id = int(row['customer_id'])
                 price = float(row['price'])
