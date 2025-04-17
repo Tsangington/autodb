@@ -64,7 +64,7 @@ async def form_page():
     </head>
     <body>
         <h1>Ask a Question</h1>
-        <form action="/query" method="post">
+        <form action="/answer" method="post">
             <input type="text" name="question" placeholder="Type your question here" required>
             <button type="submit">Ask</button>
         </form>
