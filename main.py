@@ -22,7 +22,7 @@ async def upload_customer(file: UploadFile = File(...)):
     try:
         data = json.loads(contents)
     except Exception:
-        file.file.seek(0)  # Reset pointer after read()
+        file.file.seek(0)
         df = pd.read_csv(file.file)
         data = df.to_dict(orient="records")
 
