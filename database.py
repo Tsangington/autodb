@@ -110,7 +110,7 @@ class Database:
             cursor.execute("""
             SELECT customer_order.id as order_id, customer_id, order_date, customer.name, price
             FROM customer_order
-            JOIN customer ON customer.id = order.customer_id
+            JOIN customer ON customer.id = customer_order.customer_id
             """)
             rows = cursor.fetchall()
         return rows
