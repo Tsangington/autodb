@@ -13,6 +13,7 @@ I have example customer and order CSVs to upload as well in the repo.
   - [POST /upload](#post-upload)
   - [POST /query](#post-query)
   - [GET /data](#get-data)
+- [Reasoning](#reasoning)
 ---
 
 ## Installation
@@ -87,4 +88,8 @@ This endpoint allows you to send a question in the form of a string, and it will
   - A `question` parameter (string) sent as form data.
   - The `question` parameter should be a text query asking about the data, such as "What is the total amount spent by customer Alice Johnson?" or "When did customer Bob Smith make a purchase?"
 
+## Reasoning
 
+- **Scalability** was a major factor in choosing PostgreSQL (mainly a relational database), as it handles large datasets efficiently compared to key-value stores or flat files like Excel sheets.
+- **Structured Data** and the ability to define **relationships** between different data entities made a relational database the most appropriate choice for the application, and made it much easier to query. If we needed more unstructured data, a NoSQL database would also be much better than a key-value pair or an excel sheet.
+- **Ease of Interaction** with data via **natural language processing** provided by ChatGPT enhances the user experience by making it more intuitive, allowing the user to have less technical knowledge to access data that they might need
