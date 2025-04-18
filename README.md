@@ -50,6 +50,7 @@ I have example customer and order CSVs to upload as well in the repo.
    ```bash
    python main.py
    ```
+   Then check [http://localhost:10000](http://localhost:10000)
    
 ## Endpoints
 
